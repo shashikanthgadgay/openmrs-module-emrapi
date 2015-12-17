@@ -119,7 +119,7 @@ public class DiagnosisServiceComponentTest extends BaseModuleContextSensitiveTes
 	@Test
 	public void getDiagnosesShouldReturnEmptyListIfNone() {
 		Patient patient = patientService.getPatient(2);
-		assertThat(diagnosisService.getDiagnoses(patient, new Date()), is(empty()));
+		assertThat(diagnosisService.getDiagnoses(patient, new Date(), null), is(empty()));
 	}
 
 	@Test
@@ -128,7 +128,7 @@ public class DiagnosisServiceComponentTest extends BaseModuleContextSensitiveTes
 		Obs obs = buildDiagnosis(patient, "2013-09-10", Diagnosis.Order.PRIMARY, Diagnosis.Certainty.PRESUMED, "non-coded pain").save().get();
 		buildDiagnosis(patient, "2013-08-10", Diagnosis.Order.PRIMARY, Diagnosis.Certainty.PRESUMED, "non-coded disease").save();
 
-		List<Diagnosis> diagnoses = diagnosisService.getDiagnoses(patient, DateUtil.parseDate("2013-09-01", "yyyy-MM-dd"));
+		List<Diagnosis> diagnoses = diagnosisService.getDiagnoses(patient, DateUtil.parseDate("2013-09-01", "yyyy-MM-dd"), null);
 		assertThat(diagnoses, contains(hasObs(obs)));
 	}
 
@@ -141,7 +141,7 @@ public class DiagnosisServiceComponentTest extends BaseModuleContextSensitiveTes
         Obs expectedThirdObs =  buildDiagnosis(patient, "2013-07-10", Diagnosis.Order.PRIMARY, Diagnosis.Certainty.PRESUMED, "non-coded disease").save().get();
         Obs expectedFirstObs = buildDiagnosis(patient, "2013-09-10", Diagnosis.Order.PRIMARY, Diagnosis.Certainty.PRESUMED, "non-coded pain").save().get();
 
-        List<Diagnosis> diagnoses = diagnosisService.getDiagnoses(patient, DateUtil.parseDate("2001-09-01", "yyyy-MM-dd"));
+        List<Diagnosis> diagnoses = diagnosisService.getDiagnoses(patient, DateUtil.parseDate("2001-09-01", "yyyy-MM-dd"), null);
         assertThat(diagnoses.get(0).getExistingObs(), is(expectedFirstObs));
         assertThat(diagnoses.get(1).getExistingObs(), is(expectedSecondObs));
         assertThat(diagnoses.get(2).getExistingObs(), is(expectedThirdObs));
@@ -153,7 +153,7 @@ public class DiagnosisServiceComponentTest extends BaseModuleContextSensitiveTes
         Obs olderObs = buildDiagnosis(patient, "2013-08-10", Diagnosis.Order.PRIMARY, Diagnosis.Certainty.PRESUMED, "non-coded pain").save().get();
 		Obs mostRecentObs = buildDiagnosis(patient, "2013-09-10", Diagnosis.Order.PRIMARY, Diagnosis.Certainty.PRESUMED, "non-coded pain").save().get();
 
-		List<Diagnosis> diagnoses = diagnosisService.getUniqueDiagnoses(patient, DateUtil.parseDate("2013-01-01", "yyyy-MM-dd"));
+		List<Diagnosis> diagnoses = diagnosisService.getUniqueDiagnoses(patient, DateUtil.parseDate("2013-01-01", "yyyy-MM-dd"), null);
         assertThat(diagnoses.size(), is(1));
 		assertThat(diagnoses.get(0).getExistingObs(), is(mostRecentObs));
 	}
@@ -165,7 +165,7 @@ public class DiagnosisServiceComponentTest extends BaseModuleContextSensitiveTes
 		Obs olderObs = buildDiagnosis(patient, "2013-08-10", Diagnosis.Order.PRIMARY, Diagnosis.Certainty.PRESUMED, malaria).save().get();
         Obs mostRecentObs = buildDiagnosis(patient, "2013-09-10", Diagnosis.Order.PRIMARY, Diagnosis.Certainty.PRESUMED, malaria).save().get();
 
-		List<Diagnosis> diagnoses = diagnosisService.getUniqueDiagnoses(patient, DateUtil.parseDate("2013-01-01", "yyyy-MM-dd"));
+		List<Diagnosis> diagnoses = diagnosisService.getUniqueDiagnoses(patient, DateUtil.parseDate("2013-01-01", "yyyy-MM-dd"), null);
         assertThat(diagnoses.size(), is(1));
         assertThat(diagnoses.get(0).getExistingObs(), is(mostRecentObs));
 	}

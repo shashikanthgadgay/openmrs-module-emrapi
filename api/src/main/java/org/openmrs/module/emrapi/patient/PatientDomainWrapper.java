@@ -357,15 +357,14 @@ public class PatientDomainWrapper implements DomainWrapper {
 		return testPatient;
 	}
 
-	public List<Diagnosis> getDiagnosesSince(Date date) {
-		List<Diagnosis> diagnoses = diagnosisService.getDiagnoses(patient, date);
+	public List<Diagnosis> getDiagnosesSince(Date fromDate, Date toDate) {
+		List<Diagnosis> diagnoses = diagnosisService.getDiagnoses(patient, fromDate, toDate);
 
 		return diagnoses;
 	}
 
-	public List<Diagnosis> getUniqueDiagnosesSince(Date date) {
-		List<Diagnosis> diagnoses = diagnosisService.getUniqueDiagnoses(patient, date);
-
+	public List<Diagnosis> getUniqueDiagnosesSince(Date fromDate, Date toDate) {
+		List<Diagnosis> diagnoses = diagnosisService.getUniqueDiagnoses(patient, fromDate, toDate);
 		return diagnoses;
 	}
 

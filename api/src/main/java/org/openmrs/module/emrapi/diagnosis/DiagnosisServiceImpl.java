@@ -137,14 +137,14 @@ public class DiagnosisServiceImpl extends BaseOpenmrsService implements Diagnosi
     }
 
     @Override
-	public List<Diagnosis> getDiagnoses(Patient patient, Date fromDate) {
+	public List<Diagnosis> getDiagnoses(Patient patient, Date fromDate, Date toDate) {
 		List<Diagnosis> diagnoses = new ArrayList<Diagnosis>();
 
 		DiagnosisMetadata diagnosisMetadata = emrApiProperties.getDiagnosisMetadata();
 
 		List<Obs> observations = obsService.getObservations(Arrays.asList((Person) patient), null, Arrays.asList(diagnosisMetadata.getDiagnosisSetConcept()),
 				null, null, null, Arrays.asList("obsDatetime"),
-				null, null, fromDate, null, false);
+				null, null, fromDate, toDate, false);
 
 		for (Obs obs : observations) {
 			Diagnosis diagnosis;
@@ -177,8 +177,8 @@ public class DiagnosisServiceImpl extends BaseOpenmrsService implements Diagnosi
 	}
 
 	@Override
-	public List<Diagnosis> getUniqueDiagnoses(Patient patient, Date fromDate) {
-		List<Diagnosis> diagnoses = getDiagnoses(patient, fromDate);
+	public List<Diagnosis> getUniqueDiagnoses(Patient patient, Date fromDate, Date toDate) {
+		List<Diagnosis> diagnoses = getDiagnoses(patient, fromDate, toDate);
 
 		Set<CodedOrFreeTextAnswer> answers = new HashSet<CodedOrFreeTextAnswer>();
 
